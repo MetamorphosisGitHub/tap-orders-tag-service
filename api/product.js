@@ -6,11 +6,13 @@ const router = express.Router();
  *
  * @return product list | empty.
  */
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
+    const msg = req.body.message;
+
     res.json({
       status: 200,
-      message: "Agora deu certo o/",
+      message: `${msg} + yeah`,
     });
   } catch (error) {
     console.error(error);
