@@ -1,0 +1,17 @@
+{
+  "name": "tap-orders-tag-service",
+  "version": "1.0.0",
+  "description": "The Anxious Pet orders webhook event processor",
+  "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Victor Camargo <victor.camargo@oowlish.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
