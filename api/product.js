@@ -10,7 +10,7 @@ const test = []
 
 router.post("/", async (req, res) => {
   try {
-    const msg = req.body.message;
+    const msg = req.body;
     test.push(msg);
 
 
