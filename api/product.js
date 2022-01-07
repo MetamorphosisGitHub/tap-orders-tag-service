@@ -10,8 +10,12 @@ const test = []
 
 router.post("/", async (req, res) => {
   try {
-    const msg = req.headers;
-    test.push(msg);
+    const signature = req.body.headers['x-bold-signature'];
+    const timestamp = req.body.headers['timestamp'];
+
+    const obj = { signature, timestamp, payload: req.body };
+
+    test.push(obj);
 
 
     res.json({
