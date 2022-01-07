@@ -6,13 +6,17 @@ const router = express.Router();
  *
  * @return product list | empty.
  */
+const test = []
+
 router.post("/", async (req, res) => {
   try {
     const msg = req.body.message;
+    test.push(msg);
+
 
     res.json({
       status: 200,
-      message: `${msg} + yeah`,
+      message: test,
     });
   } catch (error) {
     console.error(error);
