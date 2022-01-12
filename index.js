@@ -14,7 +14,7 @@ app.post("/teste", async (req, res) => {
     // console.log(req.body);
     const a = await db.createItem('teste', { teste: req.body });
     res.json({
-        message: 'a'
+        message: a
     });
 });
 
