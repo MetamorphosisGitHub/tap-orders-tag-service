@@ -12,11 +12,20 @@ app.use(express.json({ extended: false }));
 
 app.post("/teste", async (req, res) => {
     // console.log(req.body);
-    const a = await db.createItem('teste', { teste: req.body });
+    await db.deleteItem('teste');
     res.json({
-        message: a
+        message: 'a'
     });
 });
+
+app.get("/teste", async (req, res) => {
+    // console.log(req.body);
+    const a = await db.getItem('teste');
+    res.json({
+        data: a
+    });
+});
+
 
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));
