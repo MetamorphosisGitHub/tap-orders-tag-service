@@ -11,9 +11,10 @@ const db = require('./api/config/db')
 app.use(express.json({ extended: false }));
 
 app.post("/teste", async (req, res) => {
-    const a = await db.createItem('teste', req.body);
+    // console.log(req.body);
+    const a = await db.createItem('teste', { teste: req.body });
     res.json({
-        message: a
+        message: 'a'
     });
 });
 
