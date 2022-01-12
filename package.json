@@ -12,6 +12,10 @@
   "author": "Victor Camargo <victor.camargo@oowlish.com>",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2"
+    "@shopify/shopify-api": "^2.0.0",
+    "aws-sdk": "^2.1053.0",
+    "dotenv": "^11.0.0",
+    "express": "^4.17.2",
+    "shopify-api-node": "^3.8.1"
   }
 }

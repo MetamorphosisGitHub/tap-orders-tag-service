@@ -1,26 +1,19 @@
+// const { Shopify } = require('@shopify/shopify-api')
+const shopify = require('../../../../config/shopify')
+
 const express = require("express");
 const router = express.Router();
 
-/**
- * GET product list.
- *
- * @return product list | empty.
- */
 const test = []
 
 router.post("/", async (req, res) => {
   try {
-    const signature = req.headers['x-bold-signature'];
-    const timestamp = req.headers['timestamp'];
-
-    const obj = { signature, timestamp, payload: req.body };
-
-    test.push(obj);
-
+    const client = new Shopify.Clients.Rest('anxious-pet.myshopify.com', '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')
+    const data = await client.get({ path: 'customers '});
 
     res.json({
       status: 200,
-      message: test,
+      message: data,
     });
   } catch (error) {
     console.error(error);

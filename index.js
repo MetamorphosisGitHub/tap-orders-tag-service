@@ -1,11 +1,21 @@
 const express = require("express");
+require('dotenv').config();
+
 const app = express();
 
-const product = require("./api/subscriptions/infra/http/controllers/product");
+const db = require('./api/config/db')
+
+// const product = require("./api/subscriptions/infra/http/controllers/product");
+// const shopify = require('./api/config/shopify')
 
 app.use(express.json({ extended: false }));
 
-app.use("/teste", product);
+app.get("/teste", async (req, res) => {
+    const a = await db.createItem('teste');
+    res.json({
+        message: a
+    });
+});
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`));
