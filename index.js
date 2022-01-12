@@ -11,18 +11,17 @@ const db = require('./api/config/db')
 app.use(express.json({ extended: false }));
 
 app.post("/teste", async (req, res) => {
-    // console.log(req.body);
-    await db.deleteItem('teste');
+    const now = Date.now();
+    await db.createItem(now, { teste: req.body });
     res.json({
-        message: 'a'
+        message: 'Successfully inserted!'
     });
 });
 
 app.get("/teste", async (req, res) => {
-    // console.log(req.body);
-    const a = await db.getItem('teste');
+    const item = await db.getItem(req.body.id);
     res.json({
-        data: a
+        data: item
     });
 });
 
