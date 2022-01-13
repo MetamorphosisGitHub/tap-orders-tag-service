@@ -49,7 +49,7 @@ exports.create = async (req, res) => {
     const interval_items = await shopify.order.list({ created_at_min: `${time}-06:00` });
     const order = interval_items.find(i => i.customer.id === shopify_customer_id);
 
-    await shopify.order.update(order.id, { tags: 'TESTE_VICTOR' })
+    await shopify.order.update(order.id, { tags: 'first-AR' })
 
     res.status(200).send();
   } catch (error) {
