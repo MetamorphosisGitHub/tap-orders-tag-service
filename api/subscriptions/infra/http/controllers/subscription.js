@@ -1,5 +1,5 @@
-const db = require("../../../../../config/db");
-// const shopify = require('../../../../../config/shopify');
+// const db = require("../../../../../config/db");
+const shopify = require('../../../../../config/shopify');
 
 // exports.getSubscription = async (req, res, next) => {
 //   try {
@@ -44,10 +44,10 @@ exports.create = async (req, res) => {
     const time = req.body.event_time;
     const shopify_customer_id = req.body.data.subscription.shopify_customer_id;
 
-    // const interval_items = await shopify.order.list({ created_at_min: `${time}-06:00` });
-    // const order = interval_items.find(i => i.customer.id === shopify_customer_id);
+    const interval_items = await shopify.order.list({ created_at_min: `${time}-06:00` });
+    const order = interval_items.find(i => i.customer.id === shopify_customer_id);
 
-    // await shopify.order.update(order.id, { tags: 'TESTE_VICTOR' })
+    await shopify.order.update(order.id, { tags: 'TESTE_VICTOR' })
 
     res.status(200).send(`${time} e ${shopify_customer_id}`);
   } catch (error) {
