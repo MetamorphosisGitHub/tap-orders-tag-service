@@ -27,15 +27,16 @@ async function createItem(id, item) {
   })
 }
 
-async function getItem(id) {
+async function getItem(id, attr) {
   return new Promise((resolve, reject) => {
-    const db = new AWS.DynamoDB()
+    const db = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
     const params = {
       TableName: process.env.AWS_DYNAMODB_TABLE,
-      Key: { ['order_id']: { S: String(id) } }
-    }
+      Key: { 'order_id': String(id) },
+      ProjectionExpression: attr
+    };
 
-    db.getItem(params, function(err, data) {
+    db.get(params, function(err, data) {
       if (err) {
         console.error('Error: ', err);
         return reject(err);
