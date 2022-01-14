@@ -1,4 +1,4 @@
-const db = require("../../../../../config/db");
+// const db = require("../../../../../config/db");
 const shopify = require('../../../../../config/shopify');
 
 exports.handle = async (req, res) => {
