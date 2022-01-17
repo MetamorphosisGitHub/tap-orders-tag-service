@@ -1,7 +1,7 @@
 const db = require("../../../../../config/db");
 
+const stack = []  
 exports.handle = async (req, res) => {
-  const stack = []  
   try {
       stack.push(req.body);
 
