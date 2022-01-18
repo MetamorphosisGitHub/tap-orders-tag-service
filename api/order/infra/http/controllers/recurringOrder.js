@@ -1,3 +1,5 @@
+const shopify = require('../../../../../config/shopify');
+
 exports.handle = async (req, res) => {
   try {
     const { purchase_date, last_ship_date } = req.body.data.subscription;
