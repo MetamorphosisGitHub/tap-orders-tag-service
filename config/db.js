@@ -21,7 +21,7 @@ async function createItem(id, item) {
         return reject(err);
       }
 
-      console.log('Item successfully added.');
+      console.log(`Item successfully added: ${id}`);
       return resolve(data);
     })
   })
@@ -67,4 +67,26 @@ async function deleteItem(id) {
   })
 }
 
-module.exports = { createItem, getItem, deleteItem };
+async function updateItem(id, attr) {
+  return new Promise((resolve, reject) => {
+    const db = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
+    const params = {
+      TableName: process.env.AWS_DYNAMODB_TABLE,
+      Key: { 'order_id': { S: String(id) } },
+      ExpressionAttributeNames: { },
+      ExpressionAttributeValues: { }
+    }
+
+    db.updateItem(params, function(err, data) {
+      if (err) {
+        console.error('Error ', err);
+        return reject(err);
+      }
+
+      console.log('Success', data);
+      return resolve(data);
+    })
+  })
+}
+
+module.exports = { createItem, getItem, deleteItem, updateItem };
