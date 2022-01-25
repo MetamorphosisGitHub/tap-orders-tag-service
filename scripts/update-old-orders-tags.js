@@ -6,7 +6,7 @@ const shopify = require('../config/shopify')
 
 const bold = axios.create({
     baseURL: 'https://ro.boldapps.net/api/third_party/v2/',
-    headers: { 'BOLD-Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhbnhpb3VzLXBldC5teXNob3BpZnkuY29tIiwianRpIjoiZmlyc3QtYW5kLXN1Yi1hci1vcmRlcnMiLCJpYXQiOjE2NDMwMzAxMDMsImV4cCI6MTY0MzExNjUwMywidXNlclR5cGUiOiJhcGkifQ.YzAwqaCCFVSjOoXYHQGlJMGJo3UXMzO_0Cr-F_RdnYxDNaGJqqOSmnfdR2DoslOXCT2iBOHCAWmoo1K8m3Ud4g' }
+    headers: { 'BOLD-Authorization': `Bearer ${process.env.BOLD_AUTH_TOKEN}` }
 })
 
 async function getFirstArs() {
@@ -37,7 +37,7 @@ async function getFirstArs() {
 
 async function getSubArs() {
     try {
-        let stack = [];
+        let order_numbers = [];
         let queryStr = ''
         let condition = true;
 
@@ -47,18 +47,17 @@ async function getSubArs() {
             if (data.subscriptions.length) {
                 const sub_ars = data.subscriptions.map(s => {
                     for (const [i, order] of s.order_logs.entries()) {
-                        if (i && !isNaN(order.shopify_order_num.replace('#', ''))) 
-                            return order.shopify_order_num.replace('#', '');
+                        if (i !== 0 && !isNaN(Number(order.shopify_order_num.replace('#', '')))) {
+                            order_numbers.push(order.shopify_order_num.replace('#', ''))
+                        }
                     }
                 })
-                
                 queryStr = `&since_id=${data.subscriptions[data.subscriptions.length - 1].id}`;
-                stack.push(sub_ars);
             }
             condition = Boolean(data.subscriptions.length);
         }
 
-        let sub_ars = stack.flat().filter(n => n);
+        let sub_ars = order_numbers.flat().filter(n => n);
         return sub_ars;
     } catch (err) {
         console.log(err);
@@ -80,13 +79,13 @@ async function timer(ms) {
     });
 }
 
-async function saveInDB(order_names) {
+async function saveInDB(order_names, type) {
     for (const name of order_names) {
         await timer(600);
         const order = await getOrder(name);
         if (order) {
             await createItem(order.id, { 
-                type: 'first-AR',
+                type: type,
                 order: order,
                 status: 'pending'
             });
@@ -96,22 +95,23 @@ async function saveInDB(order_names) {
 
 async function updateTags(order_names) {
     for (const [i, name] of order_names.entries()) {
+        // if (i > 100) break;
         await timer(600);
         const order = await getOrder(name);
         if (order) {
             await timer(600);
-            await shopify.order.update(order.id, {
-                tags: `${order.tags.replace('recurring_order', 'first-AR')}` 
-            });
-            await updateItem(order.id, { status: 'updated' })
+            await shopify.order.update(order.id, { tags: `${order.tags.replace('recurring_order', 'first-AR')}` });
+            await updateItem(order.id, { status: 'updated' });
             console.log(`Order updated. ID: ${order.id}. ${order_names.length - i} orders left.`)
+        } else {
+            console.log(`Error updating order. Name: ${name}`);
         }
     }
 }
 
 async function main() {
     const first_ars = await getFirstArs();
-    await saveInDB(first_ars);
+    await updateTags(first_ars);
 }
 
 main();

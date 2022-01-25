@@ -72,18 +72,23 @@ async function updateItem(id, attr) {
     const db = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
     const params = {
       TableName: process.env.AWS_DYNAMODB_TABLE,
-      Key: { 'order_id': { S: String(id) } },
-      ExpressionAttributeNames: { },
-      ExpressionAttributeValues: { }
+      Key: { 'order_id': String(id) },
+      UpdateExpression: `set #status_updated = :u`,
+      ExpressionAttributeNames: {
+        "#status_updated": "status"
+      },
+      ExpressionAttributeValues: { 
+        ":u": attr.status
+      }
     }
 
-    db.updateItem(params, function(err, data) {
+    db.update(params, function(err, data) {
       if (err) {
         console.error('Error ', err);
         return reject(err);
       }
 
-      console.log('Success', data);
+      console.log('Updated successfully.');
       return resolve(data);
     })
   })
