@@ -15,7 +15,7 @@ exports.handle = async (req, res) => {
     time.setMinutes(time.getMinutes() - 2);
 
     const interval_items = await shopify.order.list({ 
-      fields: 'id, name, email, total_price, tags, created_at',
+      fields: 'id, name, email, total_price, tags, customer, created_at',
       created_at_min: `${time}-06:00`
     });
     const order = interval_items.find(i => i.customer.id === shopify_customer_id);

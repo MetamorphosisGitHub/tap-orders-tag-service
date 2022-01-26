@@ -1,6 +1,5 @@
 require('dotenv/config');
 const axios = require('axios')
-const { v4: uuid } = require('uuid')
 const { createItem, updateItem } = require('../config/db')
 const shopify = require('../config/shopify')
 
