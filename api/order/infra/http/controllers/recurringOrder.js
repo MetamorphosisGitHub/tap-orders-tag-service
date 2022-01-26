@@ -21,8 +21,7 @@ exports.handle = async (req, res) => {
     const order = interval_items.find(i => i.customer.id === shopify_customer_id);
 
     await shopify.order.update(order.id, { tags: 'sub-AR' });
-    // await createItem(order.id, { type: 'sub-AR', order: order, status: 'updated' });
-
+    await createItem(order.id, { type: 'sub-AR', order: order, status: 'updated' });
     res.status(200).send();
   } catch (error) {
     console.error(error);

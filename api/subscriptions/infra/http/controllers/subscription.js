@@ -1,4 +1,4 @@
-const db = require("../../../../../config/db");
+const { createItem } = require("../../../../../config/db");
 const shopify = require('../../../../../config/shopify');
 
 exports.handle = async (req, res) => {
@@ -15,8 +15,7 @@ exports.handle = async (req, res) => {
     const order = interval_items.find(i => i.customer.id === shopify_customer_id);
 
     await shopify.order.update(order.id, { tags: 'first-AR' });
-    // await createItem(order.id, { type: 'first-AR', order: order, status: 'updated' });
-
+    await createItem(order.id, { type: 'first-AR', order: order, status: 'updated' });
     res.status(200).send();
   } catch (error) {
     console.error(error);

@@ -95,12 +95,11 @@ async function saveInDB(order_names, type) {
 
 async function updateTags(order_names) {
     for (const [i, name] of order_names.entries()) {
-        // if (i > 100) break;
         await timer(600);
         const order = await getOrder(name);
         if (order) {
             await timer(600);
-            await shopify.order.update(order.id, { tags: `${order.tags.replace('recurring_order', 'first-AR')}` });
+            await shopify.order.update(order.id, { tags: `${order.tags.replace('recurring_order', 'sub-AR')}` });
             await updateItem(order.id, { status: 'updated' });
             console.log(`Order updated. ID: ${order.id}. ${order_names.length - i} orders left.`)
         } else {
@@ -110,8 +109,8 @@ async function updateTags(order_names) {
 }
 
 async function main() {
-    const first_ars = await getFirstArs();
-    await updateTags(first_ars);
+    // const sub_ars = await getSubArs();
+    // await updateTags(sub_ars);
 }
 
 main();
